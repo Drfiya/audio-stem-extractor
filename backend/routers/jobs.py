@@ -79,33 +79,9 @@ async def websocket_progress(ws: WebSocket, job_id: str):
         unsubscribe(job_id, q)
 
 
-# ── GET /api/stems/{job_id}/{stem_name} ─────────────────
-
-@router.get("/api/stems/{job_id}/{stem_name}")
-async def download_stem(job_id: str, stem_name: str):
-    """Download an individual stem file."""
-    job = jobs.get(job_id)
-    if job is None:
-        return ErrorResponse(code="NOT_FOUND", message="Job not found.")
-
-    output_dir = Path(job.get("output_dir", settings.output_dir))
-    # Search recursively — Demucs nests output in model-name sub-folders
-    matches = list(output_dir.rglob(stem_name))
-
-    if not matches:
-        return ErrorResponse(
-            code="STEM_NOT_FOUND",
-            message=f"Stem '{stem_name}' not found for job {job_id}.",
-        )
-
-    return FileResponse(
-        path=str(matches[0]),
-        filename=stem_name,
-        media_type="application/octet-stream",
-    )
-
-
 # ── GET /api/stems/{job_id}/zip ─────────────────────────
+# NOTE: This must be defined BEFORE the {stem_name} route below,
+# otherwise FastAPI treats "zip" as a stem_name parameter.
 
 @router.get("/api/stems/{job_id}/zip")
 async def download_zip(job_id: str):
@@ -139,3 +115,30 @@ async def download_zip(job_id: str):
             "Content-Disposition": f'attachment; filename="{base_name}_stems.zip"'
         },
     )
+
+
+# ── GET /api/stems/{job_id}/{stem_name} ─────────────────
+
+@router.get("/api/stems/{job_id}/{stem_name}")
+async def download_stem(job_id: str, stem_name: str):
+    """Download an individual stem file."""
+    job = jobs.get(job_id)
+    if job is None:
+        return ErrorResponse(code="NOT_FOUND", message="Job not found.")
+
+    output_dir = Path(job.get("output_dir", settings.output_dir))
+    # Search recursively — Demucs nests output in model-name sub-folders
+    matches = list(output_dir.rglob(stem_name))
+
+    if not matches:
+        return ErrorResponse(
+            code="STEM_NOT_FOUND",
+            message=f"Stem '{stem_name}' not found for job {job_id}.",
+        )
+
+    return FileResponse(
+        path=str(matches[0]),
+        filename=stem_name,
+        media_type="application/octet-stream",
+    )
+
