@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+PROJECT_DIR="/Users/lutfiyamiller/Projects/audio-stem-extractor"
+cd "$PROJECT_DIR"
+exec "$PROJECT_DIR/launch.sh"
