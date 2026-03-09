@@ -1,0 +1,15 @@
+# ── Core ─────────────────────────────────────────────
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.0
+pydantic-settings>=2.0
+python-multipart>=0.0.9          # required for file uploads
+
+# ── Folder watching ──────────────────────────────────
+watchdog>=4.0
+
+# ── Audio / ML (install separately — heavy deps) ────
+# demucs               # pip install demucs   (requires torch)
+# spleeter             # pip install spleeter (requires tensorflow)
+
+# Note: ffmpeg must be installed via your system package manager.

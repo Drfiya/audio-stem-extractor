@@ -1,0 +1,77 @@
+/* Tailwind v4 — uses the @import directive instead of @tailwind directives */
+@import "tailwindcss";
+
+/* ── Custom theme ───────────────────────────────────────── */
+@theme {
+  --color-brand-400: #a78bfa;
+  --color-brand-500: #8b5cf6;
+  --color-brand-600: #7c3aed;
+  --color-brand-700: #6d28d9;
+
+  --color-surface-50: #f8fafc;
+  --color-surface-800: #1e293b;
+  --color-surface-850: #172032;
+  --color-surface-900: #0f172a;
+  --color-surface-950: #020617;
+
+  --color-accent-cyan: #22d3ee;
+  --color-accent-emerald: #34d399;
+  --color-accent-rose: #fb7185;
+  --color-accent-amber: #fbbf24;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Global base styles ─────────────────────────────────── */
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  body {
+    font-family: var(--font-sans);
+  }
+
+  /* Subtle custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 999px;
+  }
+}
+
+/* ── Animations ─────────────────────────────────────────── */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-out;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.35s ease-out;
+  }
+  .animate-pulse-slow {
+    animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Drop-zone drag-over glow ───────────────────────────── */
+.dropzone-active {
+  border-color: var(--color-brand-500) !important;
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.25),
+              inset 0 0 30px rgba(139, 92, 246, 0.06);
+  transform: scale(1.01);
+}
